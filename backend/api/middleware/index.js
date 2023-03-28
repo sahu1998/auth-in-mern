@@ -7,7 +7,7 @@ const verifyUserToken = (req, res, next) => {
     res.send({
       message: "Token Required",
       login: false,
-      status: "error",
+      status: 400,
     });
     return;
   }
@@ -17,13 +17,13 @@ const verifyUserToken = (req, res, next) => {
         error: err,
         message: "Invalid Token",
         login: false,
-        status: "error",
+        status: 400,
       });
     } else {
       req.authorized = {
         message: "Valid Token",
         login: true,
-        status: "success",
+        status: 200,
         user,
       };
       next();

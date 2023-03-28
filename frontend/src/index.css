@@ -22,12 +22,12 @@ code {
     border: 1px solid #252525;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 10px;
+    /* background-color: ghostwhite; */
     width: 50%;
   }
 }
 
-@media screen and (min-width: 480px) {
+@media screen and (min-width: 180px) {
   .forgot-pass-container {
     padding: 20px;
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-const serverUrl = "http://localhost:8055";
+const serverUrl = "http://localhost:8055/auth";
 export const postApiHandler = async (endpoint, user) => {
   const response = await axios.post(serverUrl + endpoint, user);
   return response.data;

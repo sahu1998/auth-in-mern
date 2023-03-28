@@ -16,8 +16,6 @@ import swal from "sweetalert";
 import * as yup from "yup";
 import { postApiHandler } from "../../apiHandler";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import AfterSignupPage from "../AfterSignupPage";
 
 const theme = createTheme();
 const schema = yup.object().shape({
@@ -66,7 +64,6 @@ export default function SignUp() {
   const {
     handleSubmit,
     register,
-    setError,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -80,7 +77,7 @@ export default function SignUp() {
     //     message: "Password doesn't match",
     //   });
     // } else {
-    const result = await postApiHandler("/auth/register", values);
+    const result = await postApiHandler("/register", values);
     console.log("result:-----", result);
     if (result.status) {
       await swal("Registration Successfull", result.message, "success");

@@ -32,7 +32,7 @@ const registerUserData = async (user) => {
     return {
       data: result,
       status: true,
-      message: "Registration Successfull, please verify email before login...",
+      message: "Registration Successfull...",
     };
   } catch (error) {
     return {

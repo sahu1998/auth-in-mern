@@ -13,9 +13,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import swal from "sweetalert";
-import * as yup from "yup";
 import { NavLink, useNavigate } from "react-router-dom";
 import { postApiHandler } from "../../apiHandler";
 function Copyright(props) {
@@ -39,17 +37,12 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const [text, setText] = React.useState();
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm();
+  const { handleSubmit, register } = useForm();
   const history = useNavigate();
   const onSubmit = async (values) => {
     console.log("user: ", values);
 
-    const result = await postApiHandler("/auth/login", values);
+    const result = await postApiHandler("/login", values);
     console.log("result:-----", result);
     if (result.login) {
       await swal("Login Successfull", result.message, "success");
