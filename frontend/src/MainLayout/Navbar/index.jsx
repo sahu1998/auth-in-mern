@@ -12,11 +12,15 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Account", "Dashboard"];
 
 function Navbar() {
+  const history = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -35,6 +39,21 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
+  const logoutUser = async () => {
+    const willPerform = await swal({
+      title: "Confirm Logout",
+      text: "Are You Sure, You want to logout",
+      icon: "warning",
+      dangerMode: true,
+      buttons: true,
+      timer: 5000,
+    });
+    console.log(willPerform);
+    if (willPerform) {
+      localStorage.clear();
+      history("/signin");
+    }
+  };
   //   const list = (anchor) => (
   //     <Box
   //       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
@@ -71,7 +90,7 @@ function Navbar() {
   //   );
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" color="secondary">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -166,7 +185,16 @@ function Navbar() {
               </Button>
             ))}
           </Box>
-
+          <Button
+            variant="contained"
+            color="success"
+            className="mx-3"
+            onClick={() => {
+              logoutUser();
+            }}
+          >
+            Logout
+          </Button>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

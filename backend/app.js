@@ -10,5 +10,5 @@ app.use(express.json());
 app.use("/auth", route);
 app.get("/api/user/confirm/:confirmationCode", verifyUserEmail);
 app.listen(process.env.PORT || 8022, () => {
-  console.log("Server Started%%%%%%%%%%");
+  console.log("Server Started%%%%%%%%%%", process.env.PORT || 8022);
 });

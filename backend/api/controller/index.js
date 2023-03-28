@@ -23,16 +23,16 @@ const sendConfirmationEmail = async (name, email, confirmationCode) => {
     .sendMail({
       from: user,
       // ######### to send a single user ############
-      // to: email,
+      to: email,
 
       // ######### to send multiple user ############
       // to: ["sajalsahu.ms@gmail.com", "dhangar2526@gmail.com"],
 
       // ######## OR we can pass like this #############
-      to: [
-        { name: "Mahi", address: "dhangar2526@gmail.com" },
-        { name: "Sajal Sahu", address: "sajalsahu.ms@gmail.com" },
-      ],
+      // to: [
+      //   { name: "Mahi", address: "dhangar2526@gmail.com" },
+      //   { name: "Sajal Sahu", address: "sajalsahu.ms@gmail.com" },
+      // ],
 
       subject: "Confirm your account",
       html: `<h1>Email Confirmation</h1>
@@ -86,7 +86,6 @@ const verifyUserEmail = async (req, res) => {
 
 const loginController = async (req, res) => {
   const { email, password } = req.body;
-  console.log("login user: ", req.body);
   if (!(email && password)) {
     res.send({ message: "email and password required", login: false });
     return;

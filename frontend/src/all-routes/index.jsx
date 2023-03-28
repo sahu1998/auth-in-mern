@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AfterSignupPage from "../pages/AfterSignupPage";
 import EmailConfirmation from "../pages/EmailConfirmation";
+import ForgotPassword from "../pages/ForgotPassword";
 import Home from "../pages/home";
 import SignIn from "../pages/login";
 import SignUp from "../pages/signup";
@@ -12,6 +13,8 @@ function AllRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+
       <Route
         path="/confirm/:confirmationCode"
         element={<EmailConfirmation />}
