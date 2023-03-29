@@ -71,22 +71,14 @@ export default function SignUp() {
   const history = useNavigate();
   const onSubmit = async (values) => {
     console.log("user: ", values);
-    // if (!(values.password === values.confirm_password)) {
-    //   setError("confirm_password", {
-    //     type: "focus",
-    //     message: "Password doesn't match",
-    //   });
-    // } else {
     const result = await postApiHandler("/register", values);
     console.log("result:-----", result);
     if (result.status) {
       await swal("Registration Successfull", result.message, "success");
-
       history("/account");
     } else {
       await swal("Registration Failed", result.message, "error");
     }
-    // }
   };
 
   return (
@@ -165,6 +157,7 @@ export default function SignUp() {
                     id="username"
                     label="Username"
                     name="username"
+                    autoComplete="username"
                     {...register("username")}
                     error={!!errors?.username}
                     helperText={errors?.username?.message}
@@ -217,7 +210,8 @@ export default function SignUp() {
                     name="confirm_password"
                     label="Confirm Password"
                     type="password"
-                    id="password"
+                    id="confirm-password"
+                    autoComplete="confirm-password"
                     {...register("confirm_password")}
                     error={!!errors?.confirm_password}
                     helperText={errors?.confirm_password?.message}

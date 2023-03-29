@@ -6,7 +6,7 @@ const MainLayout = ({ children }) => {
   const history = useNavigate();
   const authenticateUser = async () => {
     const token = localStorage.getItem("token");
-    const isValidUser = await getApiHandler(`/auth/verify-user/${token}`);
+    const isValidUser = await getApiHandler(`/verify-user/${token}`);
     console.log("auth: ", isValidUser);
     if (!isValidUser.login) {
       localStorage.removeItem("login");

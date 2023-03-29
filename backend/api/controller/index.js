@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
+const sendMail = require("../../utils/sendEmail");
 require("dotenv").config();
 const { registerUserData, activateAccount, getData } = require("../model");
 
@@ -8,44 +8,6 @@ const user = process.env.USER;
 const pass = process.env.PASSWORD;
 
 // const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
-
-const transport = nodemailer.createTransport({
-  service: "Gmail",
-  auth: {
-    user: user,
-    pass: pass,
-  },
-});
-
-const sendConfirmationEmail = async (recepient) => {
-  console.log("Check");
-  try {
-    const mailResult = await transport.sendMail({
-      from: user,
-      // ######### to send a single user ############
-      to: recepient.email,
-
-      // ######### to send multiple user ############
-      // to: ["sajalsahu.ms@gmail.com", "dhangar2526@gmail.com"],
-
-      // ######## OR we can pass like this #############
-      // to: [
-      //   { name: "Mahi", address: "dhangar2526@gmail.com" },
-      //   { name: "Sajal Sahu", address: "sajalsahu.ms@gmail.com" },
-      // ],
-
-      subject: recepient.subject,
-      html: `<h1>${recepient.heading}</h1>
-        <h2>${recepient.subHeading}</h2>
-        <p>${recepient.message}</p>
-        <a href=http://localhost:3000${recepient.route}> Click here</a>
-        </div>`,
-    });
-    return { mailResult, status: 200, message: "Email Send Successfully" };
-  } catch (error) {
-    return { error, status: 400, message: "Email sending error." };
-  }
-};
 
 const postSignupController = async (req, res) => {
   console.log("signup data: ", req.body);
@@ -68,18 +30,12 @@ const postSignupController = async (req, res) => {
   });
   const registerdUser = response.data;
 
-  // ############ sending mail for email verification
-
   if (response.status) {
-    const mailInfo = {
-      subject: `Confirm Your Account`,
-      heading: `Email Confirmation`,
-      subHeading: `hello ${registerdUser.username}`,
-      email: registerdUser.email,
-      message: `Thanks for signing up with Shaka laka boom boom! You must follow this link within 5 minutes of registration to activate your account:`,
-      route: `/confirm/${registerdUser.confirmationCode}`,
-    };
-    const mailResult = await sendConfirmationEmail(mailInfo);
+    const mailResult = await sendMail(
+      registerdUser.email,
+      "Confirm Your Account",
+      `/confirm/${registerdUser.confirmationCode}`
+    );
     if (mailResult.status === 200) {
       res.send({
         data: registerdUser,
@@ -160,15 +116,11 @@ const checkEmailController = async (req, res) => {
     const confirmationCode = jwt.sign({ _id, email }, process.env.SECRET_KEY, {
       expiresIn: 300,
     });
-    const mailInfo = {
-      subject: `Forgot Password`,
-      heading: `Change Your Password`,
-      subHeading: `hello ${username}`,
+    const mailResult = await sendMail(
       email,
-      message: `Here is your password reset link, You must follow this link within 5 minutes to change password.`,
-      route: `/reset-password/${confirmationCode}`,
-    };
-    const mailResult = await sendConfirmationEmail(mailInfo);
+      "Forgot Password",
+      `/reset-password/${confirmationCode}`
+    );
     return res.send(mailResult);
   } catch (error) {
     return res.send(error);
