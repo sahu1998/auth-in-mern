@@ -2,7 +2,12 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../../utils/sendEmail");
 require("dotenv").config();
-const { registerUserData, activateAccount, getData } = require("../model");
+const {
+  registerUserData,
+  activateAccount,
+  getData,
+  findOneAndUpdate,
+} = require("../model");
 
 const user = process.env.USER;
 const pass = process.env.PASSWORD;
@@ -34,7 +39,7 @@ const postSignupController = async (req, res) => {
     const mailResult = await sendMail(
       registerdUser.email,
       "Confirm Your Account",
-      `/confirm/${registerdUser.confirmationCode}`
+      `/confirm/${registerdUser._id}/${registerdUser.confirmationCode}`
     );
     if (mailResult.status === 200) {
       res.send({
@@ -119,9 +124,24 @@ const checkEmailController = async (req, res) => {
     const mailResult = await sendMail(
       email,
       "Forgot Password",
-      `/reset-password/${confirmationCode}`
+      `/reset-password/${_id}/${confirmationCode}`
     );
     return res.send(mailResult);
+  } catch (error) {
+    return res.send(error);
+  }
+};
+
+const changePasswordController = async (req, res) => {
+  console.log("params: ", req.params);
+  console.log("body: ", req.body);
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(req.body.password, salt);
+  console.log(hash);
+  try {
+    const updateResult = await findOneAndUpdate(req.params.id, hash);
+    console.log("-------", updateResult);
+    return res.send(updateResult);
   } catch (error) {
     return res.send(error);
   }
@@ -131,6 +151,7 @@ module.exports = {
   verifyUserEmail,
   loginController,
   checkEmailController,
+  changePasswordController,
 };
 
 //   const dcrypt = bcrypt.compareSync(req.body.password, hash);

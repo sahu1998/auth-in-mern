@@ -3,12 +3,12 @@ import { NavLink, useParams } from "react-router-dom";
 import { getApiHandler } from "../../apiHandler";
 
 function EmailConfirmation() {
-  const { confirmationCode } = useParams();
+  const { id, confirmationCode } = useParams();
   const [result, setResult] = useState("");
 
   const verifyUserEmail = async () => {
     const verifyUser = await getApiHandler(
-      `/api/user/confirm/${confirmationCode}`
+      `/api/user/confirm/${id}/${confirmationCode}`
     );
 
     if (verifyUser.status) {

@@ -63,5 +63,26 @@ const getData = async (email) => {
     return error;
   }
 };
+const findOneAndUpdate = async (id, password) => {
+  console.log("password update", id);
 
-module.exports = { registerUserData, activateAccount, getData };
+  try {
+    const result = await userModel.findByIdAndUpdate(
+      id,
+      {
+        $set: { password },
+      },
+      { projection: { _id: 1, email: 1 } }
+    );
+    return { result, status: 200 };
+  } catch (error) {
+    return { error, status: 400 };
+  }
+};
+
+module.exports = {
+  registerUserData,
+  activateAccount,
+  getData,
+  findOneAndUpdate,
+};

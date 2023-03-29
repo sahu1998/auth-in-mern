@@ -16,11 +16,11 @@ function AllRoutes() {
       <Route path="/signin" element={<SignIn />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route
-        path="/reset-password/:confirmationCode"
+        path="/reset-password/:id/:confirmationCode"
         element={<ChangePassword />}
       />
       <Route
-        path="/confirm/:confirmationCode"
+        path="/confirm/:id/:confirmationCode"
         element={<EmailConfirmation />}
       />
       <Route path="/account" element={<AfterSignupPage />} />
